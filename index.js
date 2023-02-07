@@ -182,17 +182,58 @@ const contractAddress = '0x9ceeF1E5FeC9E6b3C13aA1Cbf80A08750Fcd28C8'; // Contrac
 
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
+
+
 app.post("/buyTicket", async (req, res) => {
-    const fromAddress = req.body.fromAddress
+    const buyerPubKey = req.body.pubKey
     const buyerPriKey = req.body.priKey
     const _id = req.body._id
     const quantity = req.body.quantity
+    const value = req.body.value
 
-    
-    contract.methods.buyTicket(_id,quantity).call().then(async(result)  => {
-        console.log(result);
-        res.json(result)
-      });
+//     const method = contract.methods.buyTicket(_id, quantity);
+// const encodedABI = method.encodeABI();
+
+// const transaction = {
+//   from: buyerPubKey,
+//   to: contractAddress,
+//   gas: 1000000,
+//   gasPrice: '30000000000',
+//   data: encodedABI,
+//   value: value
+// };
+
+// const signedTransaction = await web3.eth.accounts.signTransaction(transaction, buyerPriKey);
+
+// const receipt = await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+// console.log(receipt);
+
+  const nonce = await web3.eth.getTransactionCount(buyerPubKey);
+  const gasPrice = await web3.eth.getGasPrice();
+  const gasLimit = 6721975;
+  const data = contract.methods.buyTicket(_id, quantity).encodeABI();
+
+  const transaction = {
+    nonce,
+    gasPrice,
+    gasLimit,
+    to: contractAddress,
+    value: value,
+    data
+  };
+
+  const signedTransaction = await web3.eth.accounts.signTransaction(transaction, buyerPriKey);
+  const result = await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+  console.log(result);
+  res.json(result)
+
+
+    // contract.methods.buyTicket(_id,quantity).call().then(async(result)  => {
+    //     console.log(result);
+    //     res.json(result)
+    //   });
+
+
 
 })
 
