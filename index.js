@@ -9,6 +9,11 @@ app.use(express.json());
 
 const contractABI = [
 	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -60,27 +65,12 @@ const contractABI = [
 				"internalType": "uint256",
 				"name": "id",
 				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "quantity",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
 			}
 		],
-		"name": "transferTicket",
+		"name": "eventOver",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
-	},
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
 	},
 	{
 		"inputs": [
@@ -175,10 +165,33 @@ const contractABI = [
 		],
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "quantity",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			}
+		],
+		"name": "transferTicket",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	}
-]; // Contract ABI from Remix
+] // Contract ABI from Remix
 
-const contractAddress = '0x9ceeF1E5FeC9E6b3C13aA1Cbf80A08750Fcd28C8'; // Contract address from Ganache
+const contractAddress = '0x6E3f73cf33a890A53CA165A76d915826497945E3'; // Contract address from Ganache
 
 const contract = new web3.eth.Contract(contractABI, contractAddress);
 
