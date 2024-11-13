@@ -5,7 +5,7 @@ pragma solidity ^0.8.15;
 contract EventContract {
     address payable private owner;
 
-    constructor() public{
+    constructor(){
         owner = payable(msg.sender);
     }
 
